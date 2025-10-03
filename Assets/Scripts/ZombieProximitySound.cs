@@ -31,7 +31,7 @@ public class ZombieProximitySound : MonoBehaviour
 
     private void Update()
     {
-        if (player == null) return;
+        if (player == null || audioSource == null) return;
 
         float distance = Vector3.Distance(transform.position, player.position);
 
