@@ -8603,6 +8603,8 @@ MonoBehaviour:
   playerCamera: {fileID: 1031184631}
   xSens: 10
   ySens: 10
+  kbXSens: 30
+  kbYSens: 30
 --- !u!114 &926367412
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -20304,6 +20306,8 @@ MonoBehaviour:
   playerCamera: {fileID: 0}
   xSens: 450
   ySens: 450
+  kbXSens: 45
+  kbYSens: 45
 --- !u!1 &1420357997
 GameObject:
   m_ObjectHideFlags: 0

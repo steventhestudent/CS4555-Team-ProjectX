@@ -20,12 +20,8 @@ public class WakeUpSequence : MonoBehaviour
     private void Start()
     {
         // Disable player input + CharacterController so it doesn’t fight your lerp
-        if (playerController != null)
-            playerController.enabled = false;
-
-        if (cc != null)
-            cc.enabled = false;
-
+        if (playerController != null)  playerController.enabled = false;
+        if (cc != null)  cc.enabled = false;
         StartCoroutine(WakeUpRoutine());
     }
 
@@ -56,10 +52,7 @@ public class WakeUpSequence : MonoBehaviour
         player.rotation = endRot;
 
         // Re-enable CharacterController + input
-        if (cc != null)
-            cc.enabled = true;
-
-        if (playerController != null)
-            playerController.enabled = true;
+        if (cc != null) cc.enabled = true;
+        if (playerController != null) playerController.enabled = true;
     }
 }

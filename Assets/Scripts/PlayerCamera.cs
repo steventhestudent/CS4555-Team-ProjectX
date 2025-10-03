@@ -10,6 +10,8 @@ public class PlayerCamera : MonoBehaviour
 
     public float xSens = 30f;
     public float ySens = 30f;
+    public float kbXSens = 45f;
+    public float kbYSens = 45f;
     private Vector2? keyboardLook;
 
     
@@ -40,7 +42,7 @@ public class PlayerCamera : MonoBehaviour
         // else print("notkeyboard");
         
         if (keyboardLookWasInactive && keyboardLook != null) StartCoroutine(keyboardLookRepeat());
-        if (keyboardLook != null) lookInput = new Vector2(lookInput.x * 20, lookInput.y * 20);
+        if (keyboardLook != null) lookInput = new Vector2(lookInput.x * kbXSens, lookInput.y * kbYSens);
         
         // Apply sensitivity
         float mouseX = lookInput.x * xSens * Time.deltaTime;
