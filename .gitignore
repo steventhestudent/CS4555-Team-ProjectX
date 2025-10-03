@@ -1,6 +1,7 @@
 # we are using unity version control
 # but i want to access code outside of unity (working copy), so we still 'use' git
 .plastic/
+Assets/Third Party/
 
 # ignore larger Assets (don't want a huge .git/ folder)
 Assets/Baseball Bats
