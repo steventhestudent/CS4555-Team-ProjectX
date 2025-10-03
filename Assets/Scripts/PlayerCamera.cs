@@ -12,24 +12,17 @@ public class PlayerCamera : MonoBehaviour
     public float ySens = 30f;
     private Vector2? keyboardLook;
 
-
-
+    
     void Start()
     {
         Cursor.lockState = CursorLockMode.Locked;
         Cursor.visible = false;
     }
-
     
-    private IEnumerator keyboardLookRepeat()
-    {
-        while (keyboardLook != null) // Continue until the condition is met
-        {
-            OnLookHandler(keyboardLook ?? Vector2.zero);
-            yield return new WaitForSeconds(0.025f);
-        }
-    }
+    // This function is automatically called by Player Input component
+    public void OnLook(InputValue value) { OnLookHandler(value.Get<Vector2>()); }
 
+    // InputValue decays (when passed to fn (i.e.: keyboardLookRepeat)), hence the handler:
     public void OnLookHandler(Vector2 lookInput)
     {
         Vector2 lookInputAbs = new Vector2(Mathf.Abs(lookInput.x), Mathf.Abs(lookInput.y));
@@ -64,10 +57,12 @@ public class PlayerCamera : MonoBehaviour
         playerCamera.transform.localRotation = Quaternion.Euler(xRotation, 0f, 0f);
     }
     
-    // This function is automatically called by Player Input component
-    public void OnLook(InputValue value)
+    private IEnumerator keyboardLookRepeat()
     {
-        Vector2 lookInput = value.Get<Vector2>();
-        OnLookHandler(lookInput);
+        while (keyboardLook != null) // Continue until the condition is met
+        {
+            OnLookHandler(keyboardLook ?? Vector2.zero);
+            yield return new WaitForSeconds(0.025f);
+        }
     }
 }

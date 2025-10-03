@@ -6,7 +6,7 @@ public class WakeUpSequence : MonoBehaviour
     [Header("References")]
     public Transform player;                 // Root of your PlayerCharacter
     public Transform standingReference;      // Empty GameObject at standing position/rotation
-    public float wakeUpDuration = 0.666f;    // Seconds to stand up
+    public float wakeUpDuration = 3f;    // Seconds to stand up
     public MonoBehaviour playerController;   // Script to disable (PlayerControls)
 
     private CharacterController cc;
