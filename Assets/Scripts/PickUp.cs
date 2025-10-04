@@ -1,13 +1,19 @@
 using UnityEngine;
 using UnityEngine.InputSystem;
 
+public interface IWeapon
+{
+    void Fire();
+}
+
 public class PickUp : MonoBehaviour
 {
     public float pickupRange = 3f;
     public Transform holdParent;
+    public Camera playerCamera; // assign in inspector
 
     private GameObject heldItem;
-    public Camera playerCamera; // assign in inspector
+    private IWeapon heldWeapon; // interface to allow WeaponGun, WeaponSword, etc.
 
     // Called automatically by PlayerInput
     public void OnInteract()
@@ -33,6 +39,9 @@ public class PickUp : MonoBehaviour
 
                 Rigidbody rb = heldItem.GetComponent<Rigidbody>();
                 if (rb != null) rb.isKinematic = true;
+
+                // See if this item has a weapon script
+                heldWeapon = heldItem.GetComponent<IWeapon>();
             }
         }
     }
@@ -46,6 +55,16 @@ public class PickUp : MonoBehaviour
 
         heldItem.transform.SetParent(null);
         heldItem = null;
+        heldWeapon = null;
         Debug.Log("Item Dropped");
+    }
+
+    void Update()
+    {
+        // Shoot if holding a weapon
+        if (heldWeapon != null && Mouse.current.leftButton.wasPressedThisFrame)
+        {
+            heldWeapon.Fire();
+        }
     }
 }
