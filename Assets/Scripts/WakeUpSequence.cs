@@ -4,31 +4,36 @@ using System.Collections;
 public class WakeUpSequence : MonoBehaviour
 {
     [Header("References")]
-    public Transform player;                 // Root of your PlayerCharacter
-    public Transform standingReference;      // Empty GameObject at standing position/rotation
-    public float wakeUpDuration = 3f;    // Seconds to stand up
-    public MonoBehaviour playerController;   // Script to disable (PlayerControls)
+    public Transform standingReference;      // GameObject @ standing position/rotation
+    public float wakeUpDuration = 3f;    // seconds to stand up
+    public MonoBehaviour playerController;   // script to disable: PlayerControls.cs
 
     private CharacterController cc;
+    public GameLoop gameLoop;
 
     private void Awake()
     {
-        if (player != null)
-            cc = player.GetComponent<CharacterController>();
+        cc = transform.GetComponent<CharacterController>();
+    }
+
+    private void BeforeWakeUpStarted()
+    {
+        // disable player input + CharacterController so it doesn’t fight lerp
+        if (playerController != null)  playerController.enabled = false;
+        if (cc != null)  cc.enabled = false;
     }
 
     private void Start()
     {
-        // Disable player input + CharacterController so it doesn’t fight your lerp
-        if (playerController != null)  playerController.enabled = false;
-        if (cc != null)  cc.enabled = false;
+        BeforeWakeUpStarted();
         StartCoroutine(WakeUpRoutine());
     }
 
+
     IEnumerator WakeUpRoutine()
     {
-        Vector3 startPos = player.position;
-        Quaternion startRot = player.rotation;
+        Vector3 startPos = transform.position;
+        Quaternion startRot = transform.rotation;
 
         Vector3 endPos = standingReference.position;
         Quaternion endRot = standingReference.rotation;
@@ -40,19 +45,26 @@ public class WakeUpSequence : MonoBehaviour
             float t = elapsed / wakeUpDuration;
             t = Mathf.SmoothStep(0f, 1f, t); // Ease in/out
 
-            player.position = Vector3.Lerp(startPos, endPos, t);
-            player.rotation = Quaternion.Slerp(startRot, endRot, t);
+            transform.position = Vector3.Lerp(startPos, endPos, t);
+            transform.rotation = Quaternion.Slerp(startRot, endRot, t);
 
             elapsed += Time.deltaTime;
             yield return null;
         }
 
         // Snap to final
-        player.position = endPos;
-        player.rotation = endRot;
+        transform.position = endPos;
+        transform.rotation = endRot;
 
-        // Re-enable CharacterController + input
+        WakeUpRoutineFinished();
+    }
+
+    private void WakeUpRoutineFinished()
+    {
+        // re-enable cc + playerControls.cs
         if (cc != null) cc.enabled = true;
         if (playerController != null) playerController.enabled = true;
+
+        gameLoop.StartGame();
     }
 }

@@ -1,3 +1,4 @@
+using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.InputSystem;
 
@@ -8,13 +9,14 @@ public interface IWeapon
 
 public class PickUp : MonoBehaviour
 {
+    private readonly HashSet<string> pickUpTags = new HashSet<string> { "PickUp" /* , "Weapon" */};
     public float pickupRange = 3f;
     public Transform holdParent;
     public Camera playerCamera; // assign in inspector
 
     private GameObject heldItem;
     private IWeapon heldWeapon; // interface to allow WeaponGun, WeaponSword, etc.
-
+    
     // Called automatically by PlayerInput
     public void OnInteract()
     {
@@ -24,11 +26,11 @@ public class PickUp : MonoBehaviour
             return;
         }
 
-        // Raycast from the camera
+        // Raycast from the cameraf
         Ray ray = new Ray(playerCamera.transform.position, playerCamera.transform.forward);
         if (Physics.Raycast(ray, out RaycastHit hit, pickupRange))
         {
-            if (hit.collider.CompareTag("PickUp"))
+            if (pickUpTags.Contains(hit.collider.tag))
             {
                 heldItem = hit.collider.gameObject;
 
@@ -42,7 +44,6 @@ public class PickUp : MonoBehaviour
 
                 // See if this item has a weapon script
                 heldWeapon = heldItem.GetComponent<IWeapon>();
-                Debug.Log("heldItem: " + heldItem + " heldWeapon: " + heldWeapon);
             }
         }
     }
