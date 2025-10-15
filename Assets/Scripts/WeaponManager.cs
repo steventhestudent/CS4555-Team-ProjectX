@@ -5,21 +5,13 @@ using UnityEngine;
 public class WeaponManager : MonoBehaviour
 {
     public static WeaponManager Instance { get; set; }
-
     public List<GameObject> weaponSlots;
-
     public GameObject activeWeaponSlot;
 
     private void Awake()
     {
-        if (Instance != null && Instance != this)
-        {
-            Destroy(gameObject);
-        }
-        else
-        {
-            Instance = this;
-        }
+        if (Instance != null && Instance != this)  Destroy(gameObject);
+        else Instance = this;
     }
 
     private void Start()
@@ -31,25 +23,12 @@ public class WeaponManager : MonoBehaviour
     {
         foreach (GameObject weaponSlot in weaponSlots)
         {
-            if (weaponSlot == activeWeaponSlot)
-            {
-                weaponSlot.SetActive(true);
-            }
-            else
-            {
-                weaponSlot.SetActive(false);
-            }
+            if (weaponSlot == activeWeaponSlot) weaponSlot.SetActive(true);
+            else weaponSlot.SetActive(false);
         }
 
-        if (Input.GetKeyDown(KeyCode.Alpha1))
-        {
-            SwitchActiveSlot(0);
-        }
-        if (Input.GetKeyDown(KeyCode.Alpha2))
-        {
-            SwitchActiveSlot(1);
-
-        }
+        if (Input.GetKeyDown(KeyCode.Alpha1)) SwitchActiveSlot(0);
+        if (Input.GetKeyDown(KeyCode.Alpha2)) SwitchActiveSlot(1);
     }
 
     public void PickupWeapon(GameObject PickedUpWeapon)
