@@ -42,6 +42,7 @@ public class PickUp : MonoBehaviour
 
                 // See if this item has a weapon script
                 heldWeapon = heldItem.GetComponent<IWeapon>();
+                Debug.Log("heldItem: " + heldItem + " heldWeapon: " + heldWeapon);
             }
         }
     }

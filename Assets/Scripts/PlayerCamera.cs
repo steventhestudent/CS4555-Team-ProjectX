@@ -36,7 +36,7 @@ public class PlayerCamera : MonoBehaviour
         if (!keyboardLookWasInactive && lookInput.x == 0 && lookInput.y == 0)
         {
             keyboardLook = null;
-            print("keyboardLook finished");
+            // Debug.Log("keyboardLook finished");
         }
         // else if (keyboardLook != null) print("iskeyboard");
         // else print("notkeyboard");
