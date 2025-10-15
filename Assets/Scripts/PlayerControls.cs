@@ -20,6 +20,15 @@ public class PlayerControls : MonoBehaviour
     private bool wasGrounded;               // Was the player on ground last frame?
     public Animator animator;               // Controls player animations
 
+    public AudioSource footstepSource;   // Plays footstep sounds
+    public AudioClip[] footstepClips;    // Array of different footstep sounds
+    public float footstepInterval = 0.5f; // Time between footsteps (adjust as needed)
+    private float footstepTimer = 0f;
+
+
+    public AudioClip landingClip;
+    public Vector2 landingPitchRange = new Vector2(0.95f, 1.05f); // slight variation
+    public float landingFootstepLockout = 0.1f; // prevent a footstep the same frame as landing
 
     void Start()
     {
@@ -85,7 +94,6 @@ public class PlayerControls : MonoBehaviour
         controller.Move(move * currentSpeed * Time.deltaTime);
 
         //  VERTICAL MOVEMENT
-
         // keep player on the ground (prevents player game object  from falling)
         if (controller.isGrounded && velocity.y < 0)
         {
@@ -95,10 +103,27 @@ public class PlayerControls : MonoBehaviour
         // Apply gravity when the player is jumping to bring them down
         velocity.y += gravity * Time.deltaTime;
 
-
         // Move the player vertically so they either jump or fall
         controller.Move(velocity * Time.deltaTime);
 
+        // FOOTSTEP SOUND
+        bool isMoving = (movementX != 0f || movementY != 0f);
+        if (controller.isGrounded && isMoving)
+        {
+            footstepTimer -= Time.deltaTime;
+
+            if (footstepTimer <= 0f)
+            {
+                PlayFootstep();
+                // Adjust interval based on walking/running
+                footstepTimer = isRunning ? footstepInterval / 1.5f : footstepInterval;
+            }
+        }
+        else
+        {
+            // reset timer when not moving or in air
+            footstepTimer = 0f;
+        }
 
         //  ANIMATION UPDATES 
 
@@ -117,14 +142,39 @@ public class PlayerControls : MonoBehaviour
         {
             // stop the jumping animation
             animator.SetBool("IsJumping", false);
+            PlayLanding();
+            footstepTimer = landingFootstepLockout;
+
         }
 
         //check is player is grounded in upcoming frames
         wasGrounded = controller.isGrounded;
-
-
-
     }
 
+    void PlayFootstep()
+    {
+        if (footstepClips.Length > 0)
+        {
+            int index = Random.Range(0, footstepClips.Length);
+            footstepSource.PlayOneShot(footstepClips[index]);
+        }
+    }
+
+    void PlayLanding()
+    {
+        if (footstepSource != null && landingClip != null)
+        {
+            // subtle pitch variation feels more natural
+            if (landingPitchRange.x > 0f && landingPitchRange.y > 0f)
+            {
+                footstepSource.pitch = Random.Range(landingPitchRange.x, landingPitchRange.y);
+            }
+            else
+            {
+                footstepSource.pitch = 1f;
+            }
+            footstepSource.PlayOneShot(landingClip);
+        }
+    }
 
 }
