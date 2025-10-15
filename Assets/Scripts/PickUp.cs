@@ -1,3 +1,4 @@
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.InputSystem;
@@ -16,7 +17,8 @@ public class PickUp : MonoBehaviour
 
     private GameObject heldItem;
     private IWeapon heldWeapon; // interface to allow WeaponGun, WeaponSword, etc.
-    
+    public GameLoop gameLoop;
+
     // Called automatically by PlayerInput
     public void OnInteract()
     {
@@ -44,7 +46,26 @@ public class PickUp : MonoBehaviour
 
                 // See if this item has a weapon script
                 heldWeapon = heldItem.GetComponent<IWeapon>();
+
+                OnItemHeld(hit);
             }
+        }
+    }
+
+    private void OnItemHeld(RaycastHit hit)
+    {
+        if (hit.collider.gameObject.name.StartsWith("Keycard"))
+        {
+            gameLoop.RegisterKeycard(hit.collider.transform);
+            DropItem(); //drop immediately after
+            // Disappear
+            StartCoroutine(Disappear());
+            IEnumerator Disappear()
+            {
+                yield return new WaitForSeconds(1.2f);
+                hit.collider.gameObject.SetActive(false);
+            }
+            
         }
     }
 
