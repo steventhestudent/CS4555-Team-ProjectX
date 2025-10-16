@@ -1,36 +1,33 @@
-using System;
-using System.Collections;
 using System.Collections.Generic;
-using System.Numerics;
 using UnityEngine;
-using Vector3 = UnityEngine.Vector3;
 using TMPro;
 
 // game state: start/end, player health + keycards
 public class GameLoop : MonoBehaviour
 {
-    private Transform playerCanvas;
-    public Transform[] players;
-    public Transform[] remainingKeycards;
-    public List<Transform> keycards = new List<Transform>();
+    public Transform[] playerObjects;
+    public Transform[] scatteredKeycards;
+    private List<Transform> keycards = new List<Transform>();
+    private List<Side> players = new List<Side>();
 
     void Start()
     {
-        playerCanvas = players[0].Find("PlayerCamera").Find("PlayerCanvas");
+        for (int i = 0 ; i < playerObjects.Length; i++) players.Add(new Side(playerObjects[i]));
+        //todo: n=2 players... seee if can duplicate Player n times (and have n cameras)
     }
     
     public void StartGame()
     {
         // enable: Keycard icon & count
-        playerCanvas.Find("KeycardCount").gameObject.SetActive(true);
-        playerCanvas.Find("KeycardIcon").gameObject.SetActive(true);
+        players[0].canvas.Find("KeycardCount").gameObject.SetActive(true);
+        players[0].canvas.Find("KeycardIcon").gameObject.SetActive(true);
         // Heart1-5
-        for (int i= 1; i < 6; i++) playerCanvas.Find("Heart" + i).gameObject.SetActive(true);
+        for (int i= 1; i < 6; i++) players[0].canvas.Find("Heart" + i).gameObject.SetActive(true);
     }
 
     private int GameOutcome()
     {
-        if (keycards.Count != remainingKeycards.Length) return -1;
+        if (keycards.Count != scatteredKeycards.Length) return -1;
         return 0; // return players[0].hp == 0 /* && players[1].hp == 0 */ ? -1 : 1;
     }
     
@@ -44,6 +41,6 @@ public class GameLoop : MonoBehaviour
     {
         keycards.Add(keycard);
         //todo: remove from remainingKeycards
-        playerCanvas.Find("KeycardCount").GetComponent<TextMeshProUGUI>().text = keycards.Count + "";
+        players[0].canvas.Find("KeycardCount").GetComponent<TextMeshProUGUI>().text = keycards.Count + "";
     }
 }

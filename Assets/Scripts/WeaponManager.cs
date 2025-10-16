@@ -33,6 +33,10 @@ public class WeaponManager : MonoBehaviour
 
     public void PickupWeapon(GameObject PickedUpWeapon)
     {
+        Camera.main.transform.Find("PlayerCanvas").Find("Crosshair").gameObject.SetActive(true);
+        Camera.main.transform.Find("PlayerCanvas").Find("WeaponIcon").gameObject.SetActive(true);
+        Camera.main.transform.Find("PlayerCanvas").Find("WeaponLabel").gameObject.SetActive(true);
+        
         AddWeaponIntoActiveSlot(PickedUpWeapon);
     }
 
