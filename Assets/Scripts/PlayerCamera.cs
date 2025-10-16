@@ -13,6 +13,7 @@ public class PlayerCamera : MonoBehaviour
     public float kbXSens = 45f;
     public float kbYSens = 45f;
     private Vector2? keyboardLook;
+    private Boolean lookEnabled = true;
 
     
     void Start()
@@ -22,9 +23,13 @@ public class PlayerCamera : MonoBehaviour
     }
     
     // This function is automatically called by Player Input component
-    public void OnLook(InputValue value) { OnLookHandler(value.Get<Vector2>()); }
+    public void OnLook(InputValue value)
+    {
+        if (!lookEnabled) return;
+        OnLookHandler(value.Get<Vector2>());
+    }
 
-    // InputValue decays (when passed to fn (i.e.: keyboardLookRepeat)), hence the handler:
+    // InputValue decays (when passed to fn (i.e.: keyboardLookRepeat)), use this handler:
     public void OnLookHandler(Vector2 lookInput)
     {
         Vector2 lookInputAbs = new Vector2(Mathf.Abs(lookInput.x), Mathf.Abs(lookInput.y));
@@ -67,4 +72,7 @@ public class PlayerCamera : MonoBehaviour
             yield return new WaitForSeconds(0.025f);
         }
     }
+
+    public bool IsLookEnabled() { return lookEnabled; }
+    public void SetLookEnabled(bool _) { lookEnabled = _; }
 }

@@ -10,10 +10,16 @@ public class GameLoop : MonoBehaviour
     private List<Transform> keycards = new List<Transform>();
     private List<Side> players = new List<Side>();
 
-    void Start()
+    void Awake()
     {
         for (int i = 0 ; i < playerObjects.Length; i++) players.Add(new Side(playerObjects[i]));
         //todo: n=2 players... seee if can duplicate Player n times (and have n cameras)
+    }
+
+    public Side GetSide(Transform playerTransform)
+    {
+        int i = System.Array.IndexOf(playerObjects, playerTransform);
+        return i == -1 || i > players.Count - 1 ? null : players[i];
     }
     
     public void StartGame()

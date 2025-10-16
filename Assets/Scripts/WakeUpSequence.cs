@@ -3,30 +3,33 @@ using System.Collections;
 
 public class WakeUpSequence : MonoBehaviour
 {
-    [Header("References")]
+    public float wakeUpDuration = 3f / 4;    // seconds to stand up
     public Transform standingReference;      // GameObject @ standing position/rotation
-    public float wakeUpDuration = 3f;    // seconds to stand up
-    public MonoBehaviour playerController;   // script to disable: PlayerControls.cs
-
-    private CharacterController cc;
     public GameLoop gameLoop;
+    private Side player;
 
     private void Awake()
     {
-        cc = transform.GetComponent<CharacterController>();
+        gameLoop = Utils.GetGameLoop();
+        player = gameLoop.GetSide(transform);
     }
 
     private void BeforeWakeUpStarted()
     {
-        // disable player input + CharacterController so it doesn’t fight lerp
-        if (playerController != null)  playerController.enabled = false;
-        if (cc != null)  cc.enabled = false;
+        Utils.ToggleControls(player.t);
     }
 
     private void Start()
     {
-        BeforeWakeUpStarted();
-        StartCoroutine(WakeUpRoutine());
+        BeforeWakeUpStarted(); // disable player controls/input
+        
+        // stare at the ceiling
+        StartCoroutine(ImmersionDelay());
+        IEnumerator ImmersionDelay()
+        {
+            yield return new WaitForSeconds(0.333f);
+            StartCoroutine(WakeUpRoutine());
+        }
     }
 
 
@@ -61,9 +64,7 @@ public class WakeUpSequence : MonoBehaviour
 
     private void WakeUpRoutineFinished()
     {
-        // re-enable cc + playerControls.cs
-        if (cc != null) cc.enabled = true;
-        if (playerController != null) playerController.enabled = true;
+        Utils.ToggleControls(player.t);
 
         gameLoop.StartGame();
     }
