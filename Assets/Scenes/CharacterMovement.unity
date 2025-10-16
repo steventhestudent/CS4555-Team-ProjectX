@@ -6326,7 +6326,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!224 &499985230
 RectTransform:
   m_ObjectHideFlags: 0
@@ -10152,7 +10152,7 @@ MonoBehaviour:
   m_CorrespondingSourceObject: {fileID: 8466686138282303575, guid: 31213a19de488d7419844138edfcfdea, type: 3}
   m_PrefabInstance: {fileID: 1168076917}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 0}
+  m_GameObject: {fileID: 1428508295}
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: fe87c0e1cc204ed48ad3b37840f39efc, type: 3}
@@ -21334,7 +21334,7 @@ PrefabInstance:
     - target: {fileID: 8466686138028564150, guid: 31213a19de488d7419844138edfcfdea, type: 3}
       propertyPath: m_sharedMaterial
       value: 
-      objectReference: {fileID: 2180264, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
+      objectReference: {fileID: 2100000, guid: e73a58f6e2794ae7b1b7e50b7fb811b0, type: 2}
     - target: {fileID: 8466686138028564150, guid: 31213a19de488d7419844138edfcfdea, type: 3}
       propertyPath: m_fontColor32.rgba
       value: 3720857546
@@ -21382,7 +21382,7 @@ PrefabInstance:
     - target: {fileID: 8466686139324887446, guid: 31213a19de488d7419844138edfcfdea, type: 3}
       propertyPath: m_sharedMaterial
       value: 
-      objectReference: {fileID: 2180264, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
+      objectReference: {fileID: 2100000, guid: e73a58f6e2794ae7b1b7e50b7fb811b0, type: 2}
     - target: {fileID: 8466686139324887446, guid: 31213a19de488d7419844138edfcfdea, type: 3}
       propertyPath: m_hasFontAssetChanged
       value: 0
@@ -21394,7 +21394,10 @@ PrefabInstance:
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
-    m_AddedComponents: []
+    m_AddedComponents:
+    - targetCorrespondingSourceObject: {fileID: 8466686138282303573, guid: 31213a19de488d7419844138edfcfdea, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 1428508298}
   m_SourcePrefab: {fileID: 100100000, guid: 31213a19de488d7419844138edfcfdea, type: 3}
 --- !u!1 &1169128162
 GameObject:
@@ -23802,7 +23805,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!224 &1295598692
 RectTransform:
   m_ObjectHideFlags: 0
@@ -29361,6 +29364,26 @@ Mesh:
     offset: 0
     size: 0
     path: 
+--- !u!1 &1428508295 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 8466686138282303573, guid: 31213a19de488d7419844138edfcfdea, type: 3}
+  m_PrefabInstance: {fileID: 1168076917}
+  m_PrefabAsset: {fileID: 0}
+--- !u!114 &1428508298
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1428508295}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: cfabb0440166ab443bba8876756fdfa9, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_EffectColor: {r: 0, g: 0, b: 0, a: 0.5}
+  m_EffectDistance: {x: 1, y: -1}
+  m_UseGraphicAlpha: 1
 --- !u!1 &1436663370
 GameObject:
   m_ObjectHideFlags: 0
