@@ -27,6 +27,7 @@ public class GameLoop : MonoBehaviour
         // enable: Keycard icon & count
         players[0].canvas.Find("KeycardCount").gameObject.SetActive(true);
         players[0].canvas.Find("KeycardIcon").gameObject.SetActive(true);
+        players[0].canvas.Find("WeaponPanel").gameObject.SetActive(true);
         // Heart1-5
         for (int i= 1; i < 6; i++) players[0].canvas.Find("Heart" + i).gameObject.SetActive(true);
     }

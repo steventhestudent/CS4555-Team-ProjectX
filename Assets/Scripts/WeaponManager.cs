@@ -8,6 +8,11 @@ public class WeaponManager : MonoBehaviour
     public List<GameObject> weaponSlots;
     public GameObject activeWeaponSlot;
 
+    [Header("Ammo")]
+    public int totalRifleAmmo = 0;
+    public int totalPistolAmmo = 0;
+
+
     private void Awake()
     {
         if (Instance != null && Instance != this)  Destroy(gameObject);
@@ -33,10 +38,7 @@ public class WeaponManager : MonoBehaviour
 
     public void PickupWeapon(GameObject PickedUpWeapon)
     {
-        Camera.main.transform.Find("PlayerCanvas").Find("Crosshair").gameObject.SetActive(true);
-        Camera.main.transform.Find("PlayerCanvas").Find("WeaponIcon").gameObject.SetActive(true);
-        Camera.main.transform.Find("PlayerCanvas").Find("WeaponLabel").gameObject.SetActive(true);
-        
+        if (activeWeaponSlot.transform.childCount == 0) Utils.ToggleCrosshair(); // show crosshair
         AddWeaponIntoActiveSlot(PickedUpWeapon);
     }
 
@@ -53,6 +55,20 @@ public class WeaponManager : MonoBehaviour
         weapon.isActiveWeapon = true;
     }
 
+    internal void PickupAmmo(AmmoBox ammo)
+    {
+        switch (ammo.ammoType)
+        {
+            case AmmoBox.AmmoType.PistolAmmo:
+                totalPistolAmmo += ammo.ammoAmount;
+                break;
+            case AmmoBox.AmmoType.RifleAmmo:
+                totalRifleAmmo += ammo.ammoAmount;
+                break;
+        }
+
+    }
+
     private void DropCurrentWeapon(GameObject PickedUpWeapon)
     {
         if (activeWeaponSlot.transform.childCount > 0)
@@ -65,6 +81,7 @@ public class WeaponManager : MonoBehaviour
             weaponToDrop.transform.localPosition = PickedUpWeapon.transform.localPosition;
             weaponToDrop.transform.localRotation = PickedUpWeapon.transform.localRotation;
         }
+        if (activeWeaponSlot.transform.childCount == 0) Utils.ToggleCrosshair(); // hide crosshair
     }
 
     public void SwitchActiveSlot(int slotNumber)
@@ -81,6 +98,34 @@ public class WeaponManager : MonoBehaviour
         {
             Weapon newWeapon = activeWeaponSlot.transform.GetChild(0).GetComponent<Weapon>();
             newWeapon.isActiveWeapon = true;
+        }
+    }
+
+    internal void DecreaseTotalAmmo(int bulletsToDecrease, Weapon.WeaponModel thisWeaponModel)
+    {
+        switch (thisWeaponModel)
+        {
+            case Weapon.WeaponModel.MG5:
+                totalRifleAmmo -= bulletsToDecrease;
+                break;
+            case Weapon.WeaponModel.Pistol:
+                totalPistolAmmo -= bulletsToDecrease;
+                break;
+        }
+    }
+    
+    public int CheckAmmoLeftFor(Weapon.WeaponModel thisWeaponModel)
+    {
+        switch(thisWeaponModel)
+        {
+            case Weapon.WeaponModel.MG5:
+                return totalRifleAmmo;
+
+            case Weapon.WeaponModel.Pistol:
+                return totalPistolAmmo;
+
+            default:
+                return 0;
         }
     }
 }

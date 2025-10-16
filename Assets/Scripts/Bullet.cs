@@ -3,19 +3,29 @@ using System.Collections.Generic;
 using UnityEngine;
 
 public class Bullet : MonoBehaviour {
-    private void OnCollisionEnter(Collision collision)
+
+    public int bulletDamage;
+
+    private void OnCollisionEnter(Collision objectWeHit)
     {
-        if (collision.gameObject.CompareTag("Target"))
+        if (objectWeHit.gameObject.CompareTag("Target"))
         {
-            print("hit" + collision.gameObject.name + " !");
+            print("hit" + objectWeHit.gameObject.name + " !");
             Destroy(gameObject);
         }
 
-        if (collision.gameObject.CompareTag("Wall"))
+        if (objectWeHit.gameObject.CompareTag("Wall"))
         {
             print("hit a wall");
             Destroy(gameObject);
         }
+
+        if (objectWeHit.gameObject.CompareTag("Zombie"))
+        {
+            objectWeHit.gameObject.GetComponent<Zombie>().TakeDamage(bulletDamage);
+            Destroy(gameObject);
+        }
+
     }
 }
 

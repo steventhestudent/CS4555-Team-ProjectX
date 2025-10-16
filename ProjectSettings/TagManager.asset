@@ -9,6 +9,7 @@ TagManager:
   - Target
   - Wall
   - Weapon
+  - Zombie
   layers:
   - Default
   - TransparentFX

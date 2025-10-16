@@ -21,5 +21,10 @@ public static class Utils
         if (!player.cam)  Debug.Log("no cam script");
         else player.cam.SetLookEnabled(!player.cam.IsLookEnabled());
     }
+
+    public static void ToggleCrosshair()
+    {
+        GetGameLoop().playerObjects[0].Find("PlayerCamera").Find("PlayerCanvas").Find("Crosshair").gameObject.SetActive(true);
+    }
     
 }
