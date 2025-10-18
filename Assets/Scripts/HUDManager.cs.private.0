@@ -1,4 +1,3 @@
-using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -26,10 +25,6 @@ public class HUDManager : MonoBehaviour
     public TextMeshProUGUI tacticalAmountUI;
 
     public Sprite emptySlot;
-
-    private Dictionary<string, Sprite> weaponSprites = new Dictionary<string, Sprite>();
-    private Dictionary<string, Sprite> ammoSprites = new Dictionary<string, Sprite>();
-    
     private void Awake()
     {
         if (Instance != null && Instance != this)
@@ -39,28 +34,6 @@ public class HUDManager : MonoBehaviour
         else
         {
             Instance = this;
-        }
-        
-        // load sprites
-        foreach (Weapon.WeaponModel weapon in Enum.GetValues(typeof(Weapon.WeaponModel)))
-        {
-            GameObject _;
-            // no rifle weapon, mg5 ammo
-            
-            //weaponSprites
-            if (weapon.ToString() != "Rifle") //todo: remove if-block
-            {
-                _ = Instantiate(Resources.Load<GameObject>(weapon.ToString() + "_Weapon"));
-                weaponSprites.Add(weapon.ToString(), _.GetComponent<SpriteRenderer>().sprite);
-                Destroy(_);
-            }
-
-            if (weapon.ToString() == "MG5") continue; //todo: remove line
-            
-            //ammoSprites
-            _ = Instantiate(Resources.Load<GameObject>(weapon.ToString() + "_Ammo"));
-            ammoSprites.Add(weapon.ToString(), _.GetComponent<SpriteRenderer>().sprite);
-            Destroy(_);
         }
     }
 
@@ -98,14 +71,30 @@ public class HUDManager : MonoBehaviour
 
     private Sprite GetWeaponSprite(Weapon.WeaponModel model)
     {
-        if (weaponSprites.TryGetValue(model.ToString(), out Sprite sprite)) return sprite;
-        return null;
+        switch (model)
+        {
+            case Weapon.WeaponModel.Pistol:
+                return Instantiate(Resources.Load<GameObject>("Pistol_Weapon")).GetComponent<SpriteRenderer>().sprite;
+            case Weapon.WeaponModel.MG5:
+                return Instantiate(Resources.Load<GameObject>("MG5_Weapon")).GetComponent<SpriteRenderer>().sprite;
+
+            default:
+                return null;
+        }
     }
 
     private Sprite GetAmmoSprite(Weapon.WeaponModel model)
     {
-        if (ammoSprites.TryGetValue(model.ToString(), out Sprite sprite)) return sprite;
-        return null;
+        switch (model)
+        {
+            case Weapon.WeaponModel.Pistol:
+                return Instantiate(Resources.Load<GameObject>("Pistol_Ammo")).GetComponent<SpriteRenderer>().sprite;
+            case Weapon.WeaponModel.MG5:
+                return Instantiate(Resources.Load<GameObject>("Rifle_Ammo")).GetComponent<SpriteRenderer>().sprite;
+
+            default:
+                return null;
+        }   
     }
 
     private GameObject GetUnActiveWeaponSlot()

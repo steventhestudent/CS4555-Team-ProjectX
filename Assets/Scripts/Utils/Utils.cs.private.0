@@ -24,8 +24,7 @@ public static class Utils
 
     public static void ToggleCrosshair()
     {
-        Transform crosshair = GetGameLoop().playerObjects[0].Find("PlayerCamera").Find("PlayerCanvas").Find("Crosshair");
-        crosshair.gameObject.SetActive(!crosshair.gameObject.activeInHierarchy);
+        GetGameLoop().playerObjects[0].Find("PlayerCamera").Find("PlayerCanvas").Find("Crosshair").gameObject.SetActive(true);
     }
     
 }
